@@ -21,11 +21,13 @@ Snips.setModule(@__MODULE__)
 # Slots:
 # Name of slots to be extracted from intents:
 #
-const SLOT_WORD = "a_word"
+const SLOT_DEVICE = "device"
 
 # name of entry in config.ini:
 #
-const INI_MY_NAME = "my_name"
+const INI_DURATION = "duration"
+const INI_REPEATS = "repeats"
+const INI_SHELLY = "ip"
 
 #
 # link between actions and intents:
@@ -38,9 +40,8 @@ const INI_MY_NAME = "my_name"
 # Language-dependent settings:
 #
 if LANG == "de"
-    Snips.registerIntentAction("pleaseRepeatDE", templateAction)
-elseif LANG == "en"
-    Snips.registerIntentAction("pleaseRepeatEN", templateAction)
+    Snips.registerIntentAction("ADoSnipsOnOffDE", waterAction)
+    Snips.registerIntentAction("ADoSnipsIrrigationDE", waterAction)
 else
-    Snips.registerIntentAction("pleaseRepeatEN", templateAction)
+    Snips.registerIntentAction("pleaseOnOffEN", waterAction)
 end

@@ -11,36 +11,39 @@
 #   as Symbols (Julia-style)
 #
 """
-function templateAction(topic, payload)
+function waterAction(topic, payload)
 
-    Dummyaction for the template.
+    Switch on irrigation.
 """
-function templateAction(topic, payload)
+function waterAction(topic, payload)
 
     # log:
-    Snips.printLog("action templateAction() started.")
-    Snips.printDebug("""Intent: $(Snips.getIntent())""")
+    Snips.printLog("action waterAction() started.")
 
-    # get my name from config.ini:
+    # ignore, if not responsible (other device):
     #
-    myName = Snips.getConfig(INI_MY_NAME)
-    if myName == nothing
-        Snips.publishEndSession(:noname)
+    device = Snips.extractSlotValue(payload, SLOT_DEVICE)
+    if device == nothing || device != "irrigation"
         return false
     end
 
-    # get the word to repeat from slot:
+
+    # ROOMs are not yet supported -> only ONE Fire  in assistent possible.
     #
-    word = Snips.extractSlotValue(payload, SLOT_WORD)
-    if word == nothing
-        Snips.publishEndSession(:dunno)
+    # get my name from config.ini:
+    #
+    if !Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") ||
+        !Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") ||
+        !Snips.isConfigValid(INI_SHELLY)
+        Snips.publishEndSession(:error_ini)
         return true
     end
 
-    # say who you are:
-    #
-    Snips.publishSay(:bravo)
-    Snips.publishEndSession("""$(Snips.langText(:iam)) $myName.
-                            $(Snips.langText(:isay)) $word""")
+    duration = parse(Int, Snips.getConfig(INI_DURATION))
+    repeats = parse(Int, Snips.getConfig(INI_REPEATS))
+    ip = Snips.getConfig(INI_SHELLY)
+
+    doIrrigation(ip, duration, repeats)
+    Snips.publishEndSession(""" $(Snips.langText(:start_irrigation)) $repeats $(Snips.langText(:times)) $duration $(Snips.langText(:minutes))""")
     return true
 end
