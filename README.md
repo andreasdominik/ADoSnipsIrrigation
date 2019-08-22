@@ -9,9 +9,14 @@ Current version of the documentation can be visited here:
 
 ## Intents
 
-The skill uses the OnOff-intend of the framework and an additional
-inted to recognise specific commands.
+The skill uses the OnOff-intend of the framework
 
+## 'config.ini'
+
+The duration and number of repeats of the watering is
+configured in the `config.ini`. In order to make changes possible
+without restart of the Snips-services, the `config.ini` is read every time
+the `start` action is executed.
 
 # Julia
 

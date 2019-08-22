@@ -28,8 +28,12 @@ function waterAction(topic, payload)
     end
 
 
-    # ROOMs are not yet supported -> only ONE Fire  in assistent possible.
+    # re-read the config.ini (in case params have changed):
     #
+    if onoff == :on
+        Snips.readConfig("$APP_DIR")
+    end
+
     # get my name from config.ini:
     #
     if !checkAllConfig()
@@ -86,6 +90,12 @@ function triggerIrrigation(topic, payload)
     haskey(trigger, :command) || return false
     trigger[:command] isa AbstractString || return false
     command = trigger[:command]
+
+    # re-read the config.ini (in case params have changed):
+    #
+    if onoff == :on
+        Snips.readConfig("$APP_DIR")
+    end
 
     # get device params from config.ini:
     #
