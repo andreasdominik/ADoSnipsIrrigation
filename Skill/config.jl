@@ -46,3 +46,5 @@ if LANG == "de"
 else
     Snips.registerIntentAction("pleaseOnOffEN", waterAction)
 end
+
+Snips.registerTriggerAction("ADoSnipsIrrigation", triggerIrrigation)

@@ -53,3 +53,63 @@ function waterAction(topic, payload)
 
     return true
 end
+
+
+
+
+"""
+    triggerIrrigation(topic, payload)
+
+The trigger must have the following JSON format:
+    {
+      "target" : "qnd/trigger/andreasdominik:ADoSnipsIrrigation",
+      "origin" : "ADoSnipsScheduler",
+      "sessionId": "1234567890abcdef",
+      "siteId" : "default",
+      "time" : "timeString",
+      "trigger" : {
+        "command" : "start"
+      }
+    }
+
+    Commands "start" or "end" will be executed with the api.
+"""
+function triggerIrrigation(topic, payload)
+
+    Snips.printLog("action triggerIrrigation() started.")
+    Snips.printDebug("Trigger: $payload")
+
+    # text if trigger is complete:
+    #
+    payload isa Dict || return false
+    haskey( payload, :trigger) || return false
+    trigger = payload[:trigger]
+
+    haskey(trigger, :command) || return false
+    trigger[:command] isa AbstractString || return false
+    command = trigger[:command]
+
+    # get device params from config.ini:
+    #
+    if !Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") ||
+        !Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") ||
+        !Snips.isConfigValid(INI_SHELLY)
+        Snips.printLog("ERROR: Cannot read config values for triggerIrrigation!")
+        return false
+    end
+
+    duration = parse(Int, Snips.getConfig(INI_DURATION))
+    repeats = parse(Int, Snips.getConfig(INI_REPEATS))
+    ip = Snips.getConfig(INI_SHELLY)
+
+    Snips.printDebug("repeats: $repeats, duration: $duration, STATUS: $IRRIGATION_STATUS")
+    if command == "start"
+        doIrrigation(ip, duration, repeats)
+    elseif command == "end"
+        endIrrigation(ip)
+    else
+        Snips.printLog("ERROR: Unknown command for triggerIrrigation: $command")
+    end
+
+    return false
+end
