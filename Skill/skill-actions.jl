@@ -32,11 +32,9 @@ function waterAction(topic, payload)
     #
     # get my name from config.ini:
     #
-    if !Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") ||
-        !Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") ||
-        !Snips.isConfigValid(INI_SHELLY)
+    if !checkAllConfig()
         Snips.publishEndSession(:error_ini)
-        return true
+        return false
     end
 
     duration = parse(Int, Snips.getConfig(INI_DURATION))
@@ -51,7 +49,7 @@ function waterAction(topic, payload)
         Snips.publishEndSession(:end_irrigation)
     end
 
-    return true
+    return false
 end
 
 
@@ -91,9 +89,7 @@ function triggerIrrigation(topic, payload)
 
     # get device params from config.ini:
     #
-    if !Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") ||
-        !Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") ||
-        !Snips.isConfigValid(INI_SHELLY)
+    if !checkAllConfig()
         Snips.printLog("ERROR: Cannot read config values for triggerIrrigation!")
         return false
     end
@@ -112,4 +108,12 @@ function triggerIrrigation(topic, payload)
     end
 
     return false
+end
+
+
+function checkAllConfig()
+
+    return Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") &
+           Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") &
+           Snips.isConfigValid(INI_SHELLY)
 end
