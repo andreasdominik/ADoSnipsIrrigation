@@ -22,6 +22,7 @@ Snips.setModule(@__MODULE__)
 # Name of slots to be extracted from intents:
 #
 const SLOT_DEVICE = "device"
+const DEVICE_NAME = "irrigation"
 
 # name of entry in config.ini:
 #
@@ -41,7 +42,7 @@ const INI_SHELLY = "ip"
 #
 if LANG == "de"
     Snips.registerIntentAction("ADoSnipsOnOffDE", waterAction)
-    Snips.registerIntentAction("ADoSnipsIrrigationDE", waterAction)
+    # Snips.registerIntentAction("ADoSnipsIrrigationDE", waterAction)
 else
     Snips.registerIntentAction("pleaseOnOffEN", waterAction)
 end

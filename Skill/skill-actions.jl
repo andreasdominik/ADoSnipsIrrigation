@@ -22,8 +22,8 @@ function waterAction(topic, payload)
 
     # ignore, if not responsible (other device):
     #
-    device = Snips.extractSlotValue(payload, SLOT_DEVICE)
-    if device == nothing || device != "irrigation"
+    onoff = Snips.isOnOffMatched(payload, DEVICE_NAME, siteId = "any")
+    if !(onoff in [:on, :off])
         return false
     end
 
@@ -43,7 +43,13 @@ function waterAction(topic, payload)
     repeats = parse(Int, Snips.getConfig(INI_REPEATS))
     ip = Snips.getConfig(INI_SHELLY)
 
-    doIrrigation(ip, duration, repeats)
-    Snips.publishEndSession(""" $(Snips.langText(:start_irrigation)) $repeats $(Snips.langText(:times)) $duration $(Snips.langText(:minutes))""")
+    if onoff == :on
+        doIrrigation(ip, duration, repeats)
+        Snips.publishEndSession(""" $(Snips.langText(:start_irrigation)) $repeats $(Snips.langText(:times)) $duration $(Snips.langText(:minutes))""")
+    else
+        endIrrigation(ip)
+        Snips.publishEndSession(:end_irrigation)
+    end
+
     return true
 end
