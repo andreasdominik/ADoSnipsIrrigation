@@ -17,7 +17,7 @@ function spawnIrrigation(ip, duration, repeats)
     Snips.printDebug("spawnIrrigation() started")
     Snips.printDebug("repeats: $repeats, duration: $duration, STATUS: $IRRIGATION_STATUS")
 
-    sleeptime = duration #* 60
+    sleeptime = duration * 60
     i = 0
     while (i < repeats) && (IRRIGATION_STATUS == :on)
         i += 1
