@@ -93,7 +93,7 @@ function triggerIrrigation(topic, payload)
 
     # re-read the config.ini (in case params have changed):
     #
-    if onoff == :on
+    if command == "start"
         Snips.readConfig("$APP_DIR")
     end
 
