@@ -27,7 +27,7 @@ const DEVICE_NAME = "irrigation"
 # name of entry in config.ini:
 #
 const INI_DURATION = "duration"
-const INI_REPEATS = "repeats"
+const INI_OFF = "off_time"
 const INI_SHELLY = "ip"
 
 #

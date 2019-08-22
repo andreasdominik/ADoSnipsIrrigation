@@ -1,11 +1,11 @@
-Snips.addText("de", :start_irrigation, "Ich gieße jetzt den Garten. Und zwar")
+Snips.addText("de", :start_irrigation, "Ich gieße jetzt den Garten.")
 Snips.addText("de", :end_irrigation, "Ich höre auf den Garten zu gießen")
 Snips.addText("de", :times, "mal jeweils")
 Snips.addText("de", :minutes, "Minuten")
 Snips.addText("de", :error_ini, "Beim Lesen der Konfiguration aus der config Datei gab es einen Fehler!")
 Snips.addText("de", :error_on, "Ich konnte die Bewässerung nicht starten!")
 
-Snips.addText("en", :start_irrigation, "I'm watering the garden now for")
+Snips.addText("en", :start_irrigation, "I'm watering the garden now.")
 Snips.addText("en", :end_irrigation, "I'm stopping the garden watering")
 Snips.addText("en", :times, "times for")
 Snips.addText("en", :minutes, "minutes")

@@ -41,13 +41,13 @@ function waterAction(topic, payload)
         return false
     end
 
-    duration = parse(Int, Snips.getConfig(INI_DURATION))
-    repeats = parse(Int, Snips.getConfig(INI_REPEATS))
+    durations = [parse(Int,x) for x in Snips.getConfig(INI_DURATION)]
+    offs = parse(Int, Snips.getConfig(INI_OFF))
     ip = Snips.getConfig(INI_SHELLY)
 
     if onoff == :on
-        doIrrigation(ip, duration, repeats)
-        Snips.publishEndSession(""" $(Snips.langText(:start_irrigation)) $repeats $(Snips.langText(:times)) $duration $(Snips.langText(:minutes))""")
+        doIrrigation(ip, durations, offs)
+        Snips.publishEndSession(:start_irrigation)
     else
         endIrrigation(ip)
         Snips.publishEndSession(:end_irrigation)
@@ -123,7 +123,7 @@ end
 
 function checkAllConfig()
 
-    return Snips.isConfigValid(INI_DURATION, regex = r"[0-9]+") &
-           Snips.isConfigValid(INI_REPEATS, regex = r"[0-9]+") &
+    return Snips.isInConfig(Symbol(INI_DURATION)) &&
+           Snips.isConfigValid(INI_OFF, regex = r"[0-9]+") &&
            Snips.isConfigValid(INI_SHELLY)
 end

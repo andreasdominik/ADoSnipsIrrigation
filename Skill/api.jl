@@ -5,33 +5,31 @@
 
 IRRIGATION_STATUS = :off
 
-function doIrrigation(ip, duration, repeats)
+function doIrrigation(ip, durations, offs)
 
     global IRRIGATION_STATUS = :on
-    @async spawnIrrigation(ip, duration, repeats)
+    @async spawnIrrigation(ip, durations, offs)
 end
 
 
-function spawnIrrigation(ip, duration, repeats)
+function spawnIrrigation(ip, durations, offs)
 
     Snips.printDebug("spawnIrrigation() started")
-    Snips.printDebug("repeats: $repeats, duration: $duration, STATUS: $IRRIGATION_STATUS")
+    Snips.printDebug("offs: $offs, durations: $durations, STATUS: $IRRIGATION_STATUS")
 
-    sleeptime = duration * 60
-    i = 0
-    while (i < repeats) && (IRRIGATION_STATUS == :on)
-        i += 1
-
-        if Snips.switchShelly1(ip, :timer; timer = sleeptime)
-            Snips.printLog("Irrigation started for $i of $repeats repeats")
-        else
-            Snips.printLog("cloud not start irrigation with device at $ip")
-            Snips.publishSay(:error_on)
+    for duration in durations
+        if IRRIGATION_STATUS == :on
+            if Snips.switchShelly1(ip, :on)
+                Snips.printLog("Irrigation started for $duration minutes")
+                sleep(duration * 60)
+                Snips.switchShelly1(ip, :off)
+                Snips.printLog("Irrigation stopped")
+            else
+                Snips.printLog("cloud not start irrigation with device at $ip")
+                Snips.publishSay(:error_on)
+            end
+            sleep(offs * 60)
         end
-        sleep(sleeptime)
-        Snips.switchShelly1(ip, :off)
-        Snips.printLog("Irrigation stopped for $i of $repeats repeats")
-        sleep(sleeptime)
     end
 end
 
