@@ -47,7 +47,16 @@ function waterAction(topic, payload)
 
     if onoff == :on
         doIrrigation(ip, durations, offs)
-        Snips.publishEndSession(:start_irrigation)
+        msg = Snips.langText(:start_irrigation)
+        msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
+        for (i, minutes) in enumerate(durations)
+            Snips.printDebug("$i of $(length(durations))")
+            if i == length(durations)
+                msg = "$msg $(Snips.langText(:and)) "
+            end
+            msg = "$msg $minutes  $(Snips.langText(:minutes))"
+        end
+        Snips.publishEndSession(msg)
     else
         endIrrigation(ip)
         Snips.publishEndSession(:end_irrigation)
