@@ -113,13 +113,13 @@ function triggerIrrigation(topic, payload)
         return false
     end
 
-    duration = parse(Int, Snips.getConfig(INI_DURATION))
-    repeats = parse(Int, Snips.getConfig(INI_REPEATS))
+    durations = [parse(Int,x) for x in Snips.getConfig(INI_DURATION)]
+    offs = parse(Int, Snips.getConfig(INI_OFF))
     ip = Snips.getConfig(INI_SHELLY)
 
-    Snips.printDebug("repeats: $repeats, duration: $duration, STATUS: $IRRIGATION_STATUS")
+    Snips.printDebug("Irrigation sequence started!")
     if command == "start"
-        doIrrigation(ip, duration, repeats)
+        doIrrigation(ip, durations, offs)
     elseif command == "end"
         endIrrigation(ip)
     else
