@@ -1,0 +1,14 @@
+# Intent definition for Calendar skill
+#
+#  (c) A. Dominik, 2020
+#
+skill = "ADoSnipsIrrigation"
+developer = "andreasdominik"
+
+
+[inventory]
+intents = []
+slots = []
+
+
+# the skill uses the QnD-On/Off-intent only, with the slot "device"
