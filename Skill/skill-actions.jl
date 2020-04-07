@@ -39,6 +39,39 @@ function waterAction(topic, payload)
 end
 
 
+
+"""
+function waterOnAction(topic, payload)
+
+    Switch on irrigation.
+"""
+function waterOnAction(topic, payload)
+
+    # log:
+    Snips.printLog("action waterOnAction() started.")
+
+    msg = runWaterActionOn()
+    Snips.publishEndSession(msg)
+    return false
+end
+
+
+"""
+function waterOffAction(topic, payload)
+
+    Switch off irrigation.
+"""
+function waterOffAction(topic, payload)
+
+    # log:
+    Snips.printLog("action waterOffAction() started.")
+
+    msg = runWaterActionOff()
+    Snips.publishEndSession(msg)
+    return false
+end
+
+
 function runWaterActionOn()
 
     # re-read the config.ini (in case params have changed):
@@ -46,8 +79,7 @@ function runWaterActionOn()
     Snips.readConfig("$APP_DIR")
 
     if !checkAllConfig()
-        Snips.publishEndSession(:error_ini)
-        return false
+        return :error_ini
     end
 
     durations = [parse(Int,x) for x in Snips.getConfig(INI_DURATION)]
@@ -71,9 +103,9 @@ end
 function runWaterActionOff()
 
     if !checkAllConfig()
-        Snips.publishEndSession(:error_ini)
-        return false
+        return :error_ini
     end
+
     ip = Snips.getConfig(INI_SHELLY)
     endIrrigation(ip)
 

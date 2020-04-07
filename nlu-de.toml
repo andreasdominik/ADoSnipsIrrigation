@@ -6,9 +6,18 @@ skill = "ADoSnipsIrrigation"
 developer = "andreasdominik"
 
 
+# the skill uses the QnD-On/Off-intent, with the slot "device"
 [inventory]
-intents = []
+intents = ["IrrigationOn", "IrrigationOff"]
 slots = []
 
 
-# the skill uses the QnD-On/Off-intent only, with the slot "device"
+# intents:
+#
+[IrrigationOn]
+irrigation_a = "partial: starte <<bitte|>> die <<Gartenbewässerung|Bewässerung>>"
+irrigation_b = "exact: <<bitte|>> bewässere <<bitte|>> den Garten"
+
+[IrrigationOff]
+irrigation_off = "exact: <<bitte|>> höre auf den Garten zu bewässern"
+irrigation_off_b = "exact: <<bitte|>> stoppe <<bitte|>> die Bewässerung"

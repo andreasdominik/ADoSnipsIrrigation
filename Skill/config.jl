@@ -41,4 +41,6 @@ const INI_OFF = "off_time"
 const INI_SHELLY = "ip"
 
 Snips.registerIntentAction("ADoSnipsOnOff", waterAction)
+Snips.registerIntentAction("IrrigationOn", waterOnAction)
+Snips.registerIntentAction("IrrigationOff", waterOffAction)
 Snips.registerTriggerAction("ADoSnipsIrrigation", triggerIrrigation)
