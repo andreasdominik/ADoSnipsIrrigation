@@ -18,7 +18,7 @@ function waterAction(topic, payload)
 function waterAction(topic, payload)
 
     # log:
-    Snips.printLog("action waterAction() started.")
+    Snips.printLog("action waterAction() started by ON/OFF intent.")
 
     # ignore, if not responsible (other device):
     #
@@ -28,14 +28,23 @@ function waterAction(topic, payload)
     end
 
 
+    msg = :dunno
+    if onoff == :on
+        msg = runWaterActionOn()
+    else
+        msg = runWaterActionOff()
+    end
+    Snips.publishEndSession(msg)
+    return false
+end
+
+
+function runWaterActionOn()
+
     # re-read the config.ini (in case params have changed):
     #
-    if onoff == :on
-        Snips.readConfig("$APP_DIR")
-    end
+    Snips.readConfig("$APP_DIR")
 
-    # get my name from config.ini:
-    #
     if !checkAllConfig()
         Snips.publishEndSession(:error_ini)
         return false
@@ -45,24 +54,30 @@ function waterAction(topic, payload)
     offs = parse(Int, Snips.getConfig(INI_OFF))
     ip = Snips.getConfig(INI_SHELLY)
 
-    if onoff == :on
-        doIrrigation(ip, durations, offs)
-        msg = Snips.langText(:start_irrigation)
-        msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
-        for (i, minutes) in enumerate(durations)
-            Snips.printDebug("$i of $(length(durations))")
-            if i == length(durations)
-                msg = "$msg $(Snips.langText(:and)) "
-            end
-            msg = "$msg $minutes  $(Snips.langText(:minutes))"
+    doIrrigation(ip, durations, offs)
+    msg = Snips.langText(:start_irrigation)
+    msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
+    for (i, minutes) in enumerate(durations)
+        Snips.printDebug("$i of $(length(durations))")
+        if i == length(durations)
+            msg = "$msg $(Snips.langText(:and)) "
         end
-        Snips.publishEndSession(msg)
-    else
-        endIrrigation(ip)
-        Snips.publishEndSession(:end_irrigation)
+        msg = "$msg $minutes  $(Snips.langText(:minutes))"
     end
 
-    return false
+    return msg
+end
+
+function runWaterActionOff()
+
+    if !checkAllConfig()
+        Snips.publishEndSession(:error_ini)
+        return false
+    end
+    ip = Snips.getConfig(INI_SHELLY)
+    endIrrigation(ip)
+
+    return :end_irrigation
 end
 
 
