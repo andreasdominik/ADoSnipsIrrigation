@@ -94,7 +94,7 @@ function runWaterActionOn()
         msg = "$msg $(length(durations)) $(Snips.langText(:times))"
         msg = "$msg $(durations[1]) $(Snips.langText(:minutes))"
     else
-        msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
+        msg = "$msg in $(length(durations)) $(Snips.langText(:rounds)):"
         for (i, minutes) in enumerate(durations)
             Snips.printDebug("$i of $(length(durations))")
             if i == length(durations)
