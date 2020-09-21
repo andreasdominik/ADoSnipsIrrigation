@@ -87,14 +87,21 @@ function runWaterActionOn()
     ip = Snips.getConfig(INI_SHELLY)
 
     doIrrigation(ip, durations, offs)
+    # say different text, if all times are identical:
+    #
     msg = Snips.langText(:start_irrigation)
-    msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
-    for (i, minutes) in enumerate(durations)
-        Snips.printDebug("$i of $(length(durations))")
-        if i == length(durations)
-            msg = "$msg $(Snips.langText(:and)) "
+    if all(i->i==durations[1], durations)
+        msg = "$msg $(length(durations)) $(Snips.langText(:times))"
+        msg = "$msg $(durations[1]) $(Snips.langText(:minutes))"
+    else
+        msg = "$msg $(length(durations)) $(Snips.langText(:rounds)):"
+        for (i, minutes) in enumerate(durations)
+            Snips.printDebug("$i of $(length(durations))")
+            if i == length(durations)
+                msg = "$msg $(Snips.langText(:and)) "
+            end
+            msg = "$msg $minutes  $(Snips.langText(:minutes))"
         end
-        msg = "$msg $minutes  $(Snips.langText(:minutes))"
     end
 
     return msg
