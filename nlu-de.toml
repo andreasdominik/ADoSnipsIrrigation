@@ -17,7 +17,8 @@ slots = []
 [IrrigationOn]
 irrigation_a = "partial: starte <<bitte|>> die <<Gartenbewässerung|Bewässerung>>"
 irrigation_b = "exact: <<bitte|>> bewässere <<bitte|>> den Garten"
+irrigation_c = "exact: <<bitte|>> gieße <<bitte|>> den Garten"
 
 [IrrigationOff]
 irrigation_off = "exact: <<bitte|>> höre auf den Garten zu bewässern"
-irrigation_off_b = "exact: <<bitte|>> stoppe <<bitte|>> die Bewässerung"
+irrigation_off_b = "exact: <<bitte|>> <<stoppe|beende>> <<bitte|>> die Bewässerung"
