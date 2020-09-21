@@ -25,7 +25,7 @@ function spawnIrrigation(ip, durations, offs)
                 Snips.switchShelly1(ip, :off)
                 Snips.printLog("Irrigation stopped")
             else
-                Snips.printLog("cloud not start irrigation with device at $ip")
+                Snips.printLog("could not start irrigation with device at $ip")
                 Snips.publishSay(:error_on)
             end
             sleep(offs * 60)
