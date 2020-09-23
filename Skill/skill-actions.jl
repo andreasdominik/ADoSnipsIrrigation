@@ -104,6 +104,7 @@ function runWaterActionOn()
         end
     end
 
+    msg = "$msg. $(Snips.langText(:warning))"
     return msg
 end
 
